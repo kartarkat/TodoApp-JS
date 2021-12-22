@@ -29,7 +29,7 @@ app.use(express.urlencoded({extended:false}))
 
 function passProcted(req, res, next){
 res.set('WWW-Authenticate', 'Basic realm="simple App"')
-if(req.headers.authorization == 'Basic aWQ6cGFzcw=='){
+if(req.headers.authorization == 'Basic YWRtaW46aWRpb3Q='){
   next()
 }else{
   res.status(401).send("please prove id password")
