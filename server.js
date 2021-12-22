@@ -9,7 +9,7 @@ app.use(express.static('public'))
 
 const MongoClient = mongodb.MongoClient;
 
-let dbString = 'mongodb://appUser:123123123@cluster0-shard-00-00.amzos.mongodb.net:27017,cluster0-shard-00-01.amzos.mongodb.net:27017,cluster0-shard-00-02.amzos.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-144pz6-shard-0&authSource=admin&retryWrites=true&w=majority'
+let dbString = 'mongodb://appUser:BOXrPPrRKWqFw8wY@cluster0-shard-00-00.amzos.mongodb.net:27017,cluster0-shard-00-01.amzos.mongodb.net:27017,cluster0-shard-00-02.amzos.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-144pz6-shard-0&authSource=admin&retryWrites=true&w=majority'
 let dbName = 'myApp'
 
 let port = process.env.PORT 
