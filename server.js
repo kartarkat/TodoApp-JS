@@ -1,5 +1,6 @@
 let express = require('express')
 let mongodb = require('mongodb')
+let sanitizeHTML = require('sanitize-html')
 
 let app = express()
 let db = null
@@ -88,7 +89,8 @@ app.get('/',  function(req, res){
 })
 
 app.post('/create-item',  function(req, res){
-  db.collection('items').insertOne ({text:req.body.item},function(){
+  let hackFreeText = sanitizeHTML(req.body.text, {allowedTags:[],allowedAttributes:{}})
+  db.collection('items').insertOne ({text:hackFreeText},function(){
     res.redirect('/')
   })
 
@@ -96,7 +98,8 @@ app.post('/create-item',  function(req, res){
 
 app.post('/update-item', function(req,res){
   //console.log(req.body.text)
-  db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)},{$set:{text:req.body.text}},function(){
+  let hackFreeText = sanitizeHTML(req.body.text, {allowedTags:[],allowedAttributes:{}})
+  db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)},{$set:{text:hackFreeText}},function(){
     res.send("data updated")
   })
 })
