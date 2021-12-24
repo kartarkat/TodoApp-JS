@@ -6,13 +6,15 @@ let app = express()
 let db = null
 
 app.use(express.static('public'))
+app.set('views','views')
+app.set('view engine', )
 
 const MongoClient = mongodb.MongoClient;
 
-let dbString = 'mongodb://appUser:BOXrPPrRKWqFw8wY@cluster0-shard-00-00.amzos.mongodb.net:27017,cluster0-shard-00-01.amzos.mongodb.net:27017,cluster0-shard-00-02.amzos.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-144pz6-shard-0&authSource=admin&retryWrites=true&w=majority'
+let dbString = 'mongodb://yourId:yourPassword@cluster0-shard-00-00.amzos.mongodb.net:27017,cluster0-shard-00-01.amzos.mongodb.net:27017,cluster0-shard-00-02.amzos.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-144pz6-shard-0&authSource=admin&retryWrites=true&w=majority'
 let dbName = 'myApp'
 
-let port = process.env.PORT 
+let port = process.env.PORT
 if(port == null || port ==""){
   port = 3000
 }
@@ -39,11 +41,14 @@ if(req.headers.authorization == 'Basic YWRtaW46aWRpb3Q='){
 
 app.use(passProcted)
 
-app.get('/',  function(req, res){ 
+// app.get('/', function(req, res){
+//   res.send("Home page")
+// })
+
+app.get('/',  function(req, res){
   db.collection('items').find().toArray(function(err,items){
     //console.log(items)
     res.send(`
-    
     <!DOCTYPE html>
     <html>
     <head>
@@ -54,8 +59,8 @@ app.get('/',  function(req, res){
     </head>
     <body>
       <div class="container">
-        <h1 class="display-6 text-center py-1">Tamil Hacks JS Tutorial</h1>
-        
+        <h1 class="display-6 text-center py-1">To do App</h1>
+
         <div class="jumbotron p-3 shadow-sm">
           <form action="/create-item" method="POST">
             <div class="d-flex align-items-center">
@@ -64,7 +69,7 @@ app.get('/',  function(req, res){
             </div>
           </form>
         </div>
-        
+
         <ul class="list-group pb-5">
         ${items.map(function(item){
          return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
@@ -75,21 +80,22 @@ app.get('/',  function(req, res){
             </div>
           </li>`
         }).join('')}
-          
+
         </ul>
-        
+
       </div>
-     
+
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-      <script src="/browser.js"></script>
+      <script src="browser.js"></script>
     </body>
-    </html> `)
+    </html>
+    `)
 
   })
 })
 
 app.post('/create-item',  function(req, res){
-  let hackFreeText = sanitizeHTML(req.body.text, {allowedTags:[],allowedAttributes:{}})
+  let hackFreeText = sanitizeHTML(req.body.item, {allowedTags:[],allowedAttributes:{}})
   db.collection('items').insertOne ({text:hackFreeText},function(){
     res.redirect('/')
   })
@@ -109,9 +115,3 @@ app.post('/delete-item',function(req, res){
     res.send("data deleted")
   })
 })
-
-
-
-  
-
-
